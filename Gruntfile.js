@@ -41,7 +41,8 @@ module.exports = function (grunt) {
       compile: {
         options: {
           data: {
-            debug: false
+            debug: false,
+            pretty: true
           }
         },
         files: [{
