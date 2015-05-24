@@ -36,6 +36,24 @@ module.exports = function (grunt) {
       }
     },
 
+    // Add jade task
+    jade: {
+      compile: {
+        options: {
+          data: {
+            debug: false
+          }
+        },
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.app %>/views/',
+          src: '**/*.jade',
+          dest: '.tmp/views/',
+          ext: '.html'
+        }]
+      }
+    },
+
     // Watches files for changes and runs tasks based on the changed files
     watch: {
       bower: {
@@ -45,6 +63,10 @@ module.exports = function (grunt) {
       coffee: {
         files: ['<%= yeoman.app %>/scripts/{,*/}*.{coffee,litcoffee,coffee.md}'],
         tasks: ['newer:coffee:dist']
+      },
+      jade: {
+        files: ['<%= yeoman.app %>/views/{,*/}*.jade'],
+        tasks: ['jade']
       },
       coffeeTest: {
         files: ['test/spec/{,*/}*.{coffee,litcoffee,coffee.md}'],
@@ -62,7 +84,8 @@ module.exports = function (grunt) {
           livereload: '<%= connect.options.livereload %>'
         },
         files: [
-          '<%= yeoman.app %>/{,*/}*.html',
+          '<%= yeoman.app %>/index.html',
+          '.tmp/views/{,*/}*.html',
           '.tmp/styles/{,*/}*.css',
           '.tmp/scripts/{,*/}*.js',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
@@ -103,8 +126,7 @@ module.exports = function (grunt) {
               connect().use(
                 '/bower_components',
                 connect.static('./bower_components')
-              ),
-              connect.static(appConfig.app)
+              )
             ];
           }
         }
@@ -393,7 +415,8 @@ module.exports = function (grunt) {
     concurrent: {
       server: [
         'coffee:dist',
-        "stylus"
+        "stylus",
+        "jade"
         //'copy:styles'
       ],
       test: [
@@ -403,6 +426,7 @@ module.exports = function (grunt) {
       dist: [
         'coffee',
         "stylus",
+        "jade",
         //'copy:styles',
         'imagemin',
         'svgmin'
