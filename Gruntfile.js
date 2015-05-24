@@ -27,6 +27,15 @@ module.exports = function (grunt) {
     // Project settings
     yeoman: appConfig,
 
+    // Add stylus task
+    stylus: {
+      compile: {
+        files: {
+          '.tmp/styles/main.css': '<%= yeoman.app %>/styles/main.styl'
+        }
+      }
+    },
+
     // Watches files for changes and runs tasks based on the changed files
     watch: {
       bower: {
@@ -42,8 +51,8 @@ module.exports = function (grunt) {
         tasks: ['newer:coffee:test', 'karma']
       },
       styles: {
-        files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
-        tasks: ['newer:copy:styles', 'autoprefixer']
+        files: ['<%= yeoman.app %>/styles/{,*/}*.styl'],
+        tasks: ['stylus']
       },
       gruntfile: {
         files: ['Gruntfile.js']
@@ -78,10 +87,6 @@ module.exports = function (grunt) {
               connect().use(
                 '/bower_components',
                 connect.static('./bower_components')
-              ),
-              connect().use(
-                '/app/styles',
-                connect.static('./app/styles')
               ),
               connect.static(appConfig.app)
             ];
@@ -388,15 +393,17 @@ module.exports = function (grunt) {
     concurrent: {
       server: [
         'coffee:dist',
-        'copy:styles'
+        "stylus"
+        //'copy:styles'
       ],
       test: [
         'coffee',
-        'copy:styles'
+        //'copy:styles'
       ],
       dist: [
         'coffee',
-        'copy:styles',
+        "stylus",
+        //'copy:styles',
         'imagemin',
         'svgmin'
       ]
@@ -411,6 +418,8 @@ module.exports = function (grunt) {
     }
   });
 
+  grunt.loadNpmTasks('grunt-contrib-stylus');
+
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
     if (target === 'dist') {
@@ -421,7 +430,7 @@ module.exports = function (grunt) {
       'clean:server',
       'wiredep',
       'concurrent:server',
-      'autoprefixer:server',
+      //'autoprefixer:server',
       'connect:livereload',
       'watch'
     ]);
