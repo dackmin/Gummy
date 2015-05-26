@@ -440,6 +440,10 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.coffee',
         singleRun: true
       }
+    },
+
+    exec: {
+      electron: '/usr/local/lib/node_modules/electron-prebuilt/dist/Electron.app/Contents/MacOS/Electron electron'
     }
   });
 
