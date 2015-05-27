@@ -62,11 +62,11 @@ module.exports = function (grunt) {
         tasks: ['wiredep']
       },
       coffee: {
-        files: ['<%= yeoman.app %>/scripts/{,*/}*.{coffee,litcoffee,coffee.md}'],
+        files: ['<%= yeoman.app %>/scripts/**/*.coffee'],
         tasks: ['newer:coffee:dist']
       },
       jade: {
-        files: ['<%= yeoman.app %>/views/{,*/}*.jade'],
+        files: ['<%= yeoman.app %>/views/**/*.jade'],
         tasks: ['newer:jade']
       },
       coffeeTest: {
@@ -86,9 +86,9 @@ module.exports = function (grunt) {
         },
         files: [
           '<%= yeoman.app %>/index.html',
-          '.tmp/views/{,*/}*.html',
-          '.tmp/styles/{,*/}*.css',
-          '.tmp/scripts/{,*/}*.js',
+          '.tmp/views/**/*.html',
+          '.tmp/styles/main.css',
+          '.tmp/scripts/**/*.js',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
       }
@@ -230,7 +230,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.app %>/scripts',
-          src: '{,*/}*.coffee',
+          src: '**/*.coffee',
           dest: '.tmp/scripts',
           ext: '.js'
         }]
