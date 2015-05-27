@@ -501,4 +501,9 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
+
+  grunt.registerTask("electron", [
+      "build",
+      "exec:electron"
+  ]);
 };
