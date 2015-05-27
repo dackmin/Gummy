@@ -1,10 +1,10 @@
 //# MAIN HEADER
-header.main-header
-    
-    .os-buttons
-        .button.cls
-        .button.min
-        .button.max
+header.main-header(ng-controller="HeaderCtrl")
+
+    .os-buttons(ng-class="{ nofocus: focused == false }")
+        a.button.cls(ng-click="close()")
+        a.button.min(ng-click="minimize()")
+        a.button.max(ng-click="maximize()")
     
     .logo Gummy
 
