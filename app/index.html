@@ -18,7 +18,8 @@
   </head>
   <body ng-app="gummyApp">
 
-    <div ng-view=""></div>
+    <ng-include src="'views/fragments/header.html'"></ng-include>
+    <div class="main-container" ng-view=""></div>
     </div>
 
 
