@@ -67,14 +67,14 @@ module.exports = function (grunt) {
       },
       jade: {
         files: ['<%= yeoman.app %>/views/{,*/}*.jade'],
-        tasks: ['jade']
+        tasks: ['newer:jade']
       },
       coffeeTest: {
         files: ['test/spec/{,*/}*.{coffee,litcoffee,coffee.md}'],
         tasks: ['newer:coffee:test', 'karma']
       },
       styles: {
-        files: ['<%= yeoman.app %>/styles/{,*/}*.styl'],
+        files: ['<%= yeoman.app %>/styles/**/*.styl'],
         tasks: ['stylus']
       },
       gruntfile: {
