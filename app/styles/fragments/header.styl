@@ -8,18 +8,20 @@
     font-size: 16px
     z-index: 2
     -webkit-user-select: none
-    -webkit-app-region: drag
 
     .logo
         position: absolute
-        width: 100%
+        width: calc(100% - 160px)
+        margin: auto
         height: 100%
         line-height: 50px
         top: 0
         left: 0
+        right: 0
         z-index: 1
         text-align: center
         color: $color-white
+        -webkit-app-region: drag
 
     .settings
         height: 100%
@@ -66,3 +68,11 @@
                 background-image: url("../images/header/min-hover.svg")
             .max
                 background-image: url("../images/header/max-hover.svg")
+
+        &.nofocus
+            .cls
+                background-image: url("../images/header/close-nofocus.svg")
+            .min
+                background-image: url("../images/header/min-nofocus.svg")
+            .max
+                background-image: url("../images/header/max-nofocus.svg")
