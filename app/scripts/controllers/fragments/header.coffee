@@ -11,11 +11,16 @@ angular
     .module 'gummyApp'
     .controller 'HeaderCtrl', ($scope) ->
 
+        $scope.remote = require "remote"
+
         $scope.focused = true
 
         $scope.close = () ->
-            console.log "lol"
-            window.close()
+            $scope.remote.getCurrentWindow().close()
+
+
+        $scope.minimize = () ->
+            $scope.remote.getCurrentWindow().minimize()
 
         window.onblur = (e) ->
             $scope.focused = false
@@ -23,4 +28,7 @@ angular
 
         window.onfocus = (e) ->
             $scope.focused = true
+
+            if $scope.remote.getCurrentWindow().isClosed()
+                $scope.remote.getCurrentWindow().restart()
             $scope.$apply()
