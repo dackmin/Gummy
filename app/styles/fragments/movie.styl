@@ -1,0 +1,49 @@
+.movie
+    display: block
+    width: 141px
+    margin-right: 20px
+    margin-bottom: 30px
+
+    a
+        text-decoration:none
+
+    .thumb-wrapper
+        display: block
+        width: 141px
+        height: 204px
+        border-radius: 5px
+        position: relative
+        overflow: hidden
+        margin-bottom: 10px
+        transition: background .3s ease
+
+        .thumb
+            width: 133px
+            height: 196px
+            top: 0
+            right: 0
+            left: 0
+            bottom: 0
+            margin: auto
+            border-radius: 5px
+            background-position: center
+            background-size: cover
+            background-repeat: no-repeat
+
+
+    &:hover
+        .thumb-wrapper
+            background: $color-shakespear
+
+    &:last-child
+        margin-right: 0
+
+    .title, .artist
+        padding: 0 4px
+        overflow: hidden
+        text-overflow: ellipsis
+        white-space: nowrap
+        margin-bottom:0
+
+    .artist
+        color: #CCC
