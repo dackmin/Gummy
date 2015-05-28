@@ -36,4 +36,116 @@ angular
             "trakt-api-version": "2"
 
 
-            
+        ###*
+         # Find a movie
+         # @method search
+         # @param {String} name - Movie name
+        ###
+        @search = (name) ->
+            q = $q.defer()
+
+            $http
+                method: "GET"
+                url: "#{API_METHOD}#{API_ROOT}/search"
+                params:
+                    query: name
+                    type: movie
+                headers: @HEADERS
+            .success (data) =>
+                movies = []
+                movies.push @toSimpleJSON(obj) for key, obj of data
+                q.resolve movies
+            .error (e) ->
+                q.reject e
+
+            q.promise
+
+
+        ###*
+         # Get movie infos
+         # @method get
+         # @param {String|int} id - Movie id/slug
+         # @param {Object} infos - Additional infos
+         # @return {Object} - $q promise
+        ###
+        @get = (id, infos) ->
+            q = $q.defer()
+
+            # Get cast members
+            @cast
+                id: id
+            .then (cast) =>
+
+                # Compile raw data
+                raw =
+                    infos: infos
+                    cast: cast
+
+                # Return parsed data
+                q.resolve @toJSON(raw)
+
+            .catch (e) ->
+                q.reject e
+
+            q.promise
+
+
+        ###*
+         # Get cast members
+         # @method cast
+         # @param {String|int} id - Movie slug/id
+         # @return {Object} - $q promise
+        ###
+        @cast = (id) ->
+            q = $q.defer()
+
+            $http
+                method: "GET"
+                url: "#{API_METHOD}#{API_ROOT}/movies/#{id}/people"
+                headers: @HEADERS
+            .success (data) ->
+                cast = []
+                cast.push item.person.name for item in data.cast
+                q.resolve cast
+            .error (e) ->
+                q.reject e
+
+            q.promise
+
+
+        ###*
+         # Return movie as simple json object
+         # @method toSimpleJSON
+         # @param {Object} raw - Raw data from movie
+         # @return {Object} - simply parsed json object
+        ###
+        @toSimpleJSON = (raw) ->
+            id: raw.movie.ids.slug
+            rating: raw.score
+            title: raw.movie.title
+            synopsis: raw.movie.overview
+            year: raw.movie.year
+            cover:
+                small: raw.movie.images.poster.thumb
+                medium: raw.movie.images.poster.medium
+                large: raw.movie.images.poster.full
+            raw: raw
+
+
+        ###*
+         # Return movie as a normal json object
+         # @method toJSON
+         # @param {Object} raw - Raw movie data
+         # @return {Object} - parsed json object
+        ###
+        @toJSON = (raw) ->
+            id: raw.infos.movies.ids.slug
+            rating: raw.infos.movie.rating * 10
+            title: raw.infos.movie.title
+            synopsis: raw.infos.movie.overview
+            year: raw.infos.movie.year
+            cast: raw.cast
+            cover:
+                small: raw.infos.movie.images.poster.thumb
+                medium: raw.infos.movie.images.poster.medium
+                large: raw.infos.movie.images.poster.full
