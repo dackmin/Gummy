@@ -46,10 +46,10 @@ angular
 
             $http
                 method: "GET"
-                url: "#{API_METHOD}#{API_ROOT}/search"
+                url: "#{@API_METHOD}#{@API_ROOT}/search"
                 params:
                     query: name
-                    type: movie
+                    type: "movie"
                 headers: @HEADERS
             .success (data) =>
                 movies = []
@@ -149,3 +149,5 @@ angular
                 small: raw.infos.movie.images.poster.thumb
                 medium: raw.infos.movie.images.poster.medium
                 large: raw.infos.movie.images.poster.full
+
+        @
