@@ -1,2 +1,7 @@
 .main-grid
-    
+    div.movie(ng-repeat="movie in grid")
+        
+        a(ng-href="item/{{ movie.id }}")
+            .thumb-wrapper
+                .thumb(style="background-image:url({{ movie.cover.large }});")
+                p.title {{ movie.title }}
