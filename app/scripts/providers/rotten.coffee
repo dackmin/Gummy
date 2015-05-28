@@ -36,7 +36,7 @@ angular
 
             $http
                 method: "GET"
-                url: "#{API_METHOD}#{API_ROOT}/movies.json"
+                url: "#{@API_METHOD}#{@API_ROOT}/movies.json"
                 params:
                     q: name
                     api_key: "n3ppab9xdhpnq5udzn3f7wxt"
@@ -110,3 +110,6 @@ angular
                 small: raw.posters.thumbnail
                 medium: raw.posters.detailed
                 large: raw.posters.original
+
+
+        @
