@@ -1,8 +1,7 @@
 .movie
     display: block
     width: 141px
-    margin-right: 20px
-    margin-bottom: 30px
+    margin: 20px
 
     a
         text-decoration:none
@@ -13,11 +12,11 @@
         height: 204px
         border-radius: 5px
         position: relative
-        overflow: hidden
         margin-bottom: 10px
         transition: background .3s ease
 
         .thumb
+            position: absolute
             width: 133px
             height: 196px
             top: 0
@@ -38,12 +37,10 @@
     &:last-child
         margin-right: 0
 
-    .title, .artist
+    .title
         padding: 0 4px
         overflow: hidden
         text-overflow: ellipsis
         white-space: nowrap
         margin-bottom:0
-
-    .artist
-        color: #CCC
+        color: $color-white
