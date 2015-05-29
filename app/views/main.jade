@@ -1,7 +1,7 @@
 .main-grid
     div.movie(ng-repeat="movie in grid")
         
-        a(ng-href="item/{{ movie.id }}")
+        a(href="javascript:;", ng-click="open_movie(movie)")
             .thumb-wrapper
                 .thumb(style="background-image:url({{ movie.cover.small }});")
             p.title {{ movie.title }}
