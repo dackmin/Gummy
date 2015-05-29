@@ -21,6 +21,7 @@
     <ng-include src="'views/fragments/header.html'"></ng-include>
     <div class="main-container" ng-view=""></div>
     </div>
+    <ng-include ng-if="selected" src="'views/fragments/movie-details.html'"></ng-include>
 
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
