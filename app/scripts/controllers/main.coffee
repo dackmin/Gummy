@@ -8,7 +8,7 @@
  # Controller of the gummyApp
 ###
 angular.module 'gummyApp'
-    .controller 'MainCtrl', ($scope, $trakt, $rotten) ->
+    .controller 'MainCtrl', ($scope, $rootScope, $trakt, $rotten) ->
 
 
         ###*
@@ -30,6 +30,20 @@ angular.module 'gummyApp'
          # @attribute grid
         ###
         $scope.grid = []
+
+
+        ###*
+         # Open movie details
+         # @method open_movie
+         # @param {Object} movie
+        ###
+        $scope.open_movie = (movie) ->
+            $trakt
+                .get movie.id, movie
+                .then (data) ->
+                    $rootScope.selected = data
+                .catch (e) ->
+                    console.error e
 
 
         ###*
