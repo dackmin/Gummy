@@ -72,8 +72,7 @@ angular
             q = $q.defer()
 
             # Get cast members
-            @cast
-                id: id
+            @cast id
             .then (cast) =>
 
                 # Compile raw data
@@ -101,7 +100,7 @@ angular
 
             $http
                 method: "GET"
-                url: "#{API_METHOD}#{API_ROOT}/movies/#{id}/people"
+                url: "#{@API_METHOD}#{@API_ROOT}/movies/#{id}/people"
                 headers: @HEADERS
             .success (data) ->
                 cast = []
@@ -139,15 +138,17 @@ angular
          # @return {Object} - parsed json object
         ###
         @toJSON = (raw) ->
-            id: raw.infos.movies.ids.slug
-            rating: raw.infos.movie.rating * 10
-            title: raw.infos.movie.title
-            synopsis: raw.infos.movie.overview
-            year: raw.infos.movie.year
-            cast: raw.cast
+            console.log raw
+
+            id: raw.infos.raw.movie.ids.slug
+            rating: raw.infos.raw.movie.rating * 10
+            title: raw.infos.raw.movie.title
+            synopsis: raw.infos.raw.movie.overview
+            year: raw.infos.raw.movie.year
+            cast: raw.cast.slice(0, 3).join ", "
             cover:
-                small: raw.infos.movie.images.poster.thumb
-                medium: raw.infos.movie.images.poster.medium
-                large: raw.infos.movie.images.poster.full
+                small: raw.infos.raw.movie.images.poster.thumb
+                medium: raw.infos.raw.movie.images.poster.medium
+                large: raw.infos.raw.movie.images.poster.full
 
         @
