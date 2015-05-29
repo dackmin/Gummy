@@ -1,0 +1,19 @@
+.movie-details(ng-controller="MovieDetailsCtrl")
+
+    //# CLOSE BUTTON
+    a.close(href="", ng-click="close()")
+        i.s-times
+
+    //# ABSOLUTE CENTERED
+    .content
+
+        //# THUMBNAIL
+        .thumb
+            .image(style="background-image:url({{ movie.cover.large }})")
+
+        //# MOVIE DETAILS
+        .infos
+            h3.title {{ movie.title }}
+            p.cast {{ movie.cast }}
+            p.synopsis {{ movie.synopsis }}
+            a(href="") Watch
