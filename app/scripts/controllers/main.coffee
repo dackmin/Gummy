@@ -1,5 +1,9 @@
 'use strict'
 
+remote = require "remote"
+app = remote.require("app")
+Datastore = remote.require "nedb"
+
 ###*
  # @ngdoc function
  # @name gummyApp.controller:MainCtrl
@@ -7,10 +11,6 @@
  # # MainCtrl
  # Controller of the gummyApp
 ###
-remote = require "remote"
-app = remote.require("app")
-Datastore = remote.require "nedb"
-
 angular.module 'gummyApp'
     .controller 'MainCtrl', ($scope, $rootScope, $timeout, $q, $trakt, $rotten) ->
 
@@ -63,7 +63,7 @@ angular.module 'gummyApp'
 
             # Read DB
             $scope.db.find {}, (e, movies) ->
-                if e then console.error e
+                if e then console.error "DB", e
 
                 # Add existing movies to main grid
                 for movie in movies
@@ -78,12 +78,7 @@ angular.module 'gummyApp'
          # @param {Object} movie
         ###
         $scope.open_movie = (movie) ->
-            $trakt
-                .get movie.id, movie
-                .then (data) ->
-                    $rootScope.selected = data
-                .catch (e) ->
-                    console.error e
+            $rootScope.selected = movie
 
 
         ###*
@@ -117,22 +112,32 @@ angular.module 'gummyApp'
                             .search filename
                             .then (data) ->
 
-                                # Add filepath to db
+                                # Use firts found movie by default
                                 stuff = data[0]
-                                stuff.path = file.path
 
-                                # Save data to DB
-                                $scope.db.insert stuff, (e, item) ->
-                                    if e then return console.error e
+                                # Get cast infos
+                                $trakt
+                                    .get stuff.id, stuff
+                                    .then (movie) ->
 
-                                    # Add data to main grid
-                                    $scope.add_movie stuff
+                                        # Add filepath to db
+                                        movie.path = file.path
+
+                                        # Save data to DB
+                                        $scope.db.insert movie, (e, item) ->
+                                            if e then return console.error "DB", e
+
+                                            # Add data to main grid
+                                            $scope.add_movie movie
+
+                                    .catch (e) ->
+                                        console.error "API", e
 
                             .catch (e) ->
-                                console.error e
+                                console.error "API", e
 
                     .catch (e) ->
-                        console.warn e
+                        console.warn "Check_Movie", e
 
 
         ###*
