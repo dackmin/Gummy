@@ -6,17 +6,23 @@
     background: rgba(0, 0, 0, 0.9)
     z-index: 10
 
+
     .close
         position: absolute
         right: 30px
         top: 20px
         font-size: 30px
         color: $color-white
-        opacity: 1
+        transition: opacity .3s ease
+        opacity: 0.5
+
+        &:hover
+            opacity: 1
+
 
     .content
         position: absolute
-        width: 600px
+        width: 700px
         height: 300px
         top: 0
         right: 0
@@ -36,6 +42,29 @@
                 background-size: cover
                 border-radius: 5px
 
+
         .infos
-            h3
+
+            p, h3
+
                 margin: 0
+
+            .cast, .additional_infos
+                opacity: 0.5
+
+            .title
+                font-size: 40px
+
+            .additional_infos
+
+                span
+                    &::after
+                        content: "•"
+                        margin: 0 10px
+                        display: inline
+
+                    &:last-child::after
+                        display: none
+
+            .synopsis
+                margin-top: 20px
