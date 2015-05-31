@@ -93,22 +93,24 @@ angular.module 'gummyApp'
         ###
         $scope.drop = (files) ->
 
-            for file in files
-
-                # Check for ext
-                filename = file.name.split(".")
-                ext = filename.pop()
-                if $scope.allowed.indexOf(ext) is -1
-                    return
-
-                # Rejoin filename parts with a space (previously replaced all
-                # dots in name)
-                filename = filename.join " "
+            for _file in files
 
                 # Check if movie is already in user's library
                 $scope
-                    .check_filepath file.path
-                    .then () ->
+                    .check_filepath _file
+                    .then (file) ->
+
+                        # Check for ext
+                        filename = file.name.split(".")
+                        ext = filename.pop()
+                        if $scope.allowed.indexOf(ext) is -1
+                            return
+
+                        # Rejoin filename parts with a space (previously replaced all
+                        # dots in name)
+                        filename = filename.join " "
+
+
 
                         # Find movie infos
                         $trakt
@@ -116,15 +118,15 @@ angular.module 'gummyApp'
                             .then (data) ->
 
                                 # Add filepath to db
-                                movie = data[0]
-                                movie.path = file.path
+                                stuff = data[0]
+                                stuff.path = file.path
 
                                 # Save data to DB
-                                $scope.db.insert movie, (e, item) ->
+                                $scope.db.insert stuff, (e, item) ->
                                     if e then return console.error e
 
                                     # Add data to main grid
-                                    $scope.add_movie movie
+                                    $scope.add_movie stuff
 
                             .catch (e) ->
                                 console.error e
@@ -149,13 +151,13 @@ angular.module 'gummyApp'
          # @param {String} filepath - Wanted filename
          # @return {Object} - $q promise
         ###
-        $scope.check_filepath = (filepath) ->
+        $scope.check_filepath = (file) ->
             q = $q.defer()
 
-            $scope.db.find { path: filepath }, (e, items) ->
+            $scope.db.find { path: file.path }, (e, items) ->
                 if e then q.reject e
                 else if items.length > 0 then q.reject "Movie already in library"
-                else q.resolve items
+                else q.resolve file
 
             q.promise
 
