@@ -138,8 +138,6 @@ angular
          # @return {Object} - parsed json object
         ###
         @toJSON = (raw) ->
-            console.log raw
-
             id: raw.infos.raw.movie.ids.slug
             rating: raw.infos.raw.movie.rating * 10
             title: raw.infos.raw.movie.title
