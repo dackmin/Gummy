@@ -1,6 +1,7 @@
 var app = require('app');  // Module to control application life.
 var BrowserWindow = require('browser-window');  // Module to create native browser window.
 var Menu = require('menu');
+var Datastore = require("nedb");
 
 
 // Report crashes to our server.
@@ -36,8 +37,14 @@ app.on('ready', function(){
             ]
         },
         {
-            label: 'View',
+            label: 'Development',
             submenu: [
+                { label: "Reset DB", accelerator: "Command+Z", click: function(){
+                    var db = new Datastore({ filename: app.getPath("home")+ "/Gummy/movies.db", autoload: true });
+                    db.remove({}, {}, function(e){
+                        BrowserWindow.getFocusedWindow().reloadIgnoringCache();
+                    });
+                }},
                 { label: 'Reload', accelerator: 'Command+R', click: function() {
                     BrowserWindow.getFocusedWindow().reloadIgnoringCache();
                 }},
@@ -76,7 +83,8 @@ app.on('ready', function() {
         width: 1000,
         height: 600,
         title: "Gummy",
-        frame: false
+        frame: false,
+        path: app.getPath("home")
     });
 
 
