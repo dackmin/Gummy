@@ -7,8 +7,21 @@
  # # MainCtrl
  # Controller of the gummyApp
 ###
+remote = require "remote"
+app = remote.require("app")
+Datastore = remote.require "nedb"
+
 angular.module 'gummyApp'
-    .controller 'MainCtrl', ($scope, $rootScope, $trakt, $rotten) ->
+    .controller 'MainCtrl', ($scope, $rootScope, $timeout, $trakt, $rotten) ->
+
+
+        ###*
+         # Internal database
+         # @attribute db
+        ###
+        $scope.db = new Datastore
+            filename: "#{app.getPath 'home'}/Gummy/movies.db"
+            autoload: true
 
 
         ###*
@@ -30,6 +43,33 @@ angular.module 'gummyApp'
          # @attribute grid
         ###
         $scope.grid = []
+
+
+        ###*
+         # Init app
+         # @method init
+        ###
+        $scope.init = () ->
+
+
+            # Add drop event to document
+            document.addEventListener "dragover", (e) -> e.preventDefault() and e.stopPropagation()
+            document.addEventListener "dragleave", (e) -> e.preventDefault() and e.stopPropagation()
+            document.addEventListener "drop", (e) ->
+                e.preventDefault()
+                e.stopPropagation()
+                $scope.drop e.dataTransfer.files
+
+
+            # Read DB
+            $scope.db.find {}, (e, movies) ->
+                if e then console.error e
+
+                # Add existing movies to main grid
+                for movie in movies
+                    $scope.add_movie movie
+
+
 
 
         ###*
@@ -55,6 +95,8 @@ angular.module 'gummyApp'
 
             for file in files
 
+                console.log file
+
                 # Check for ext
                 filename = file.name.split(".")
                 ext = filename.pop()
@@ -69,15 +111,33 @@ angular.module 'gummyApp'
                 $trakt
                     .search filename
                     .then (data) ->
-                        $scope.grid.push data[0]
+
+                        # Add filepath to db
+                        movie = data[0]
+                        movie.path = file.path
+
+                        # Save data to DB
+                        $scope.db.insert movie, (e, item) ->
+                            if e then return console.error e
+
+                            # Add data to main grid
+                            $scope.add_movie movie
+
+
                     .catch (e) ->
                         console.error e
 
 
-        # Add event to document
-        document.addEventListener "dragover", (e) -> e.preventDefault() and e.stopPropagation()
-        document.addEventListener "dragleave", (e) -> e.preventDefault() and e.stopPropagation()
-        document.addEventListener "drop", (e) ->
-            e.preventDefault()
-            e.stopPropagation()
-            $scope.drop e.dataTransfer.files
+        ###*
+         # Add a movie and getting rid of angular fucking digest cycle
+        ###
+        $scope.add_movie = (movie) ->
+            $timeout () ->
+                $scope.grid.push movie
+
+
+
+        #$scope.check = (filepath) ->
+
+        # Init app
+        $scope.init()
