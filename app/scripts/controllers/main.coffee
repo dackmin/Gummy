@@ -12,7 +12,7 @@ app = remote.require("app")
 Datastore = remote.require "nedb"
 
 angular.module 'gummyApp'
-    .controller 'MainCtrl', ($scope, $rootScope, $timeout, $trakt, $rotten) ->
+    .controller 'MainCtrl', ($scope, $rootScope, $timeout, $q, $trakt, $rotten) ->
 
 
         ###*
@@ -95,8 +95,6 @@ angular.module 'gummyApp'
 
             for file in files
 
-                console.log file
-
                 # Check for ext
                 filename = file.name.split(".")
                 ext = filename.pop()
@@ -107,37 +105,60 @@ angular.module 'gummyApp'
                 # dots in name)
                 filename = filename.join " "
 
-                # Find movie infos
-                $trakt
-                    .search filename
-                    .then (data) ->
+                # Check if movie is already in user's library
+                $scope
+                    .check_filepath file.path
+                    .then () ->
 
-                        # Add filepath to db
-                        movie = data[0]
-                        movie.path = file.path
+                        # Find movie infos
+                        $trakt
+                            .search filename
+                            .then (data) ->
 
-                        # Save data to DB
-                        $scope.db.insert movie, (e, item) ->
-                            if e then return console.error e
+                                # Add filepath to db
+                                movie = data[0]
+                                movie.path = file.path
 
-                            # Add data to main grid
-                            $scope.add_movie movie
+                                # Save data to DB
+                                $scope.db.insert movie, (e, item) ->
+                                    if e then return console.error e
 
+                                    # Add data to main grid
+                                    $scope.add_movie movie
+
+                            .catch (e) ->
+                                console.error e
 
                     .catch (e) ->
-                        console.error e
+                        console.warn e
 
 
         ###*
          # Add a movie and getting rid of angular fucking digest cycle
+         # @method add_movie
+         # @param {Object} movie - Your movie object
         ###
         $scope.add_movie = (movie) ->
             $timeout () ->
                 $scope.grid.push movie
 
 
+        ###*
+         # Check if movie already exists in db (based on filepath)
+         # @method check_movie
+         # @param {String} filepath - Wanted filename
+         # @return {Object} - $q promise
+        ###
+        $scope.check_filepath = (filepath) ->
+            q = $q.defer()
 
-        #$scope.check = (filepath) ->
+            $scope.db.find { path: filepath }, (e, items) ->
+                if e then q.reject e
+                else if items.length > 0 then q.reject "Movie already in library"
+                else q.resolve items
+
+            q.promise
+
 
         # Init app
         $scope.init()
