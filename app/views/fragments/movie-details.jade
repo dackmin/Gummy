@@ -15,5 +15,11 @@
         .infos
             p.cast {{ movie.cast }}
             h3.title {{ movie.title }}
+            p.additional_infos
+                span {{ movie.year }}
+                span {{ movie.rating }}
             p.synopsis {{ movie.synopsis }}
-            a(href="") Watch
+
+        //# BUTTONS
+        .buttons
+            a.button(href="") Watch
