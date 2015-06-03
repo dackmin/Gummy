@@ -18,7 +18,11 @@ angular
                     click: () ->
                         scope.$parent.open_movie scope.movie, true
                 }
-                { label: "Get informations for this movie...", click: (do ->) }
+                {
+                    label: "Get informations for this movie...",
+                    click: () ->
+                        scope.$parent.seek_movie_infos scope.movie, true
+                }
             ]
 
             # Open context menu on right click
