@@ -1,6 +1,7 @@
 'use strict'
 
 remote = require "remote"
+BrowserWindow = remote.getCurrentWindow()
 
 ###*
  # @ngdoc function
@@ -19,8 +20,8 @@ angular
          # @attribute system
         ###
         $scope.system =
-            darwin: false #/^darwin/.test process.platform
-            windows: true #/^win/.test process.platform
+            darwin: /^darwin/.test process.platform
+            windows: /^win/.test process.platform
             linux: /^linux/.test process.platform
 
 
@@ -45,6 +46,17 @@ angular
         ###
         $scope.minimize = () ->
             remote.getCurrentWindow().minimize()
+
+
+        ###*
+         # Maximize app
+         # @method maximize
+        ###
+        $scope.maximize = () ->
+            if $scope.system.darwin
+                BrowserWindow.setKiosk !BrowserWindow.isKiosk()
+            else
+                if BrowserWindow.isMaximized() then BrowserWindow.maximize() else BrowserWindow.unmaximize()
 
 
         # Add events to current window
