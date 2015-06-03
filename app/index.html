@@ -22,6 +22,7 @@
     <div class="main-container" ng-view=""></div>
     </div>
     <ng-include ng-if="selected" src="'views/fragments/movie-details.html'"></ng-include>
+    <ng-include ng-if="seeking" src="'views/fragments/get-infos.html'"></ng-include>
 
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -56,12 +57,14 @@
 
         <script src="scripts/app.js"></script>
 
+        <script src="scripts/providers/db.js"></script>
         <script src="scripts/providers/trakt.js"></script>
         <script src="scripts/providers/rotten.js"></script>
 
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/controllers/fragments/header.js"></script>
         <script src="scripts/controllers/fragments/movie-details.js"></script>
+        <script src="scripts/controllers/fragments/get-infos.js"></script>
         <!-- endbuild -->
 </body>
 </html>
