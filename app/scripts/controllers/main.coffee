@@ -1,9 +1,5 @@
 'use strict'
 
-remote = require "remote"
-app = remote.require "app"
-Datastore = remote.require "nedb"
-
 ###*
  # @ngdoc function
  # @name gummyApp.controller:MainCtrl
@@ -11,17 +7,13 @@ Datastore = remote.require "nedb"
  # # MainCtrl
  # Controller of the gummyApp
 ###
-angular.module 'gummyApp'
-    .controller 'MainCtrl', ($scope, $rootScope, $timeout, $q, $trakt, $rotten) ->
+angular
+    .module 'gummyApp'
+    .controller 'MainCtrl', ($scope, $rootScope, $timeout, $q, $trakt, $db) ->
 
-
-        ###*
-         # Internal database
-         # @attribute db
-        ###
-        $scope.db = new Datastore
-            filename: "#{app.getPath 'home'}/Gummy/movies.db"
-            autoload: true
+        # Imports
+        remote = require "remote"
+        app = remote.require "app"
 
 
         ###*
@@ -50,19 +42,10 @@ angular.module 'gummyApp'
          # @method init
         ###
         $scope.init = () ->
-
-
-            # Add drop event to document
-            document.addEventListener "dragover", (e) -> e.preventDefault() and e.stopPropagation()
-            document.addEventListener "dragleave", (e) -> e.preventDefault() and e.stopPropagation()
-            document.addEventListener "drop", (e) ->
-                e.preventDefault()
-                e.stopPropagation()
-                $scope.drop e.dataTransfer.files
-
+            $scope.reset_movies()
 
             # Read DB
-            $scope.db.find {}, (e, movies) ->
+            $db.movies.find {}, (e, movies) ->
                 if e then console.error "DB", e
 
                 # Add existing movies to main grid
@@ -74,10 +57,24 @@ angular.module 'gummyApp'
          # Open movie details
          # @method open_movie
          # @param {Object} movie
+         # @param {boolean} apply - Bad practice, I know, and I don't care.
         ###
         $scope.open_movie = (movie, apply) ->
-            $rootScope.selected = movie
-            if apply then $rootScope.$apply()
+            $timeout () ->
+                $rootScope.selected = movie
+            #if apply then $rootScope.$apply()
+
+
+        ###*
+         # Seek more infos on a precise movie
+         # @method seek_movie_infos
+         # @param {Object} movie
+         # @param {boolean} apply - Bad practice, I know, and I don't care.
+        ###
+        $scope.seek_movie_infos = (movie, apply) ->
+            $timeout () ->
+                $rootScope.seeking = movie
+            #if apply then $rootScope.$apply()
 
 
         ###*
@@ -100,11 +97,9 @@ angular.module 'gummyApp'
                         if $scope.allowed.indexOf(ext) is -1
                             return
 
-                        # Rejoin filename parts with a space (previously replaced all
-                        # dots in name)
+                        # Rejoin filename parts with a space (previously
+                        # replaced all dots in name)
                         filename = filename.join " "
-
-
 
                         # Find movie infos
                         $trakt
@@ -123,7 +118,7 @@ angular.module 'gummyApp'
                                         movie.path = file.path
 
                                         # Save data to DB
-                                        $scope.db.insert movie, (e, item) ->
+                                        $db.movies.insert movie, (e, item) ->
                                             if e then return console.error "DB", e
 
                                             # Add data to main grid
@@ -147,6 +142,16 @@ angular.module 'gummyApp'
         $scope.add_movie = (movie) ->
             $timeout () ->
                 $scope.grid.push movie
+            , 1
+
+
+        ###*
+         # Refresh grid with stream from db
+         # @method reset_movies
+        ###
+        $scope.reset_movies = () ->
+            $timeout () ->
+                $scope.grid = []
 
 
         ###*
@@ -158,13 +163,25 @@ angular.module 'gummyApp'
         $scope.check_filepath = (file) ->
             q = $q.defer()
 
-            $scope.db.find { path: file.path }, (e, items) ->
+            $db.movies.find { path: file.path }, (e, items) ->
                 if e then q.reject e
                 else if items.length > 0 then q.reject "Movie already in library"
                 else q.resolve file
 
             q.promise
 
+
+        # Listen for movies changes
+        $rootScope.$on "refresh.movies", () ->
+            $scope.init()
+
+        # Add drop event to document
+        document.addEventListener "dragover", (e) -> e.preventDefault() and e.stopPropagation()
+        document.addEventListener "dragleave", (e) -> e.preventDefault() and e.stopPropagation()
+        document.addEventListener "drop", (e) ->
+            e.preventDefault()
+            e.stopPropagation()
+            $scope.drop e.dataTransfer.files
 
         # Init app
         $scope.init()
