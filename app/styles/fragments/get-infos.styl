@@ -1,0 +1,76 @@
+.get-infos
+    width: 100%
+    height: calc(100vh - 50px)
+    position: fixed
+    top: 50px
+    background: rgba(0, 0, 0, 0.8)
+    z-index: 11
+    overflow: auto
+
+
+    .close
+        position: absolute
+        right: 30px
+        top: 20px
+        font-size: 30px
+        color: $color-white
+        transition: opacity .3s ease
+        opacity: 0.5
+
+        &:hover
+            opacity: 1
+
+
+    .content
+        width: 700px
+        padding: 100px 0
+        margin: auto
+        overflow: visible
+
+        h2
+            margin-bottom: 40px
+
+        .infos
+            width: calc(100% + 15px)
+            margin-bottom: 40px
+            padding: 20px
+            padding-bottom: 0
+            transition: border-left .2s ease-out, margin-left .2s ease-out
+            border-left: 0 solid $color-shakespear
+            cursor: pointer
+            overflow: visible
+
+            &:hover
+                border-left-width: 5px
+                margin-left: 10px
+
+            .title
+                margin: 0
+
+            .additional
+                opacity: 0.5
+
+                span
+                    &::after
+                        display: inline
+                        content: "•"
+                        margin: 0 10px
+
+                    &:last-child::after
+                        display: none
+
+            .synopsis
+                display: -webkit-box
+                -webkit-line-clamp: 4
+                -webkit-box-orient: vertical
+                text-overflow: ellipsis
+                overflow: hidden
+
+            .thumb
+                width: 100px
+                height: 147px
+                margin-right: 20px
+                margin-bottom: 20px
+                float: left
+                background-size: cover
+                border-radius: 3px
