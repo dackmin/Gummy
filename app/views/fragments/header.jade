@@ -1,10 +1,15 @@
 //# MAIN HEADER
-header.main-header(ng-controller="HeaderCtrl")
+header.main-header(ng-controller="HeaderCtrl", ng-class="{ darwin: system.darwin == true, windows: system.windows == true, linux: system.linux == true}")
 
-    .os-buttons(ng-class="{ nofocus: focused == false }")
+    .os-buttons.darwin(ng-class="{ nofocus: focused == false }", ng-show="system.darwin == true")
         a.button.cls(ng-click="close()")
         a.button.min(ng-click="minimize()")
         a.button.max(ng-click="maximize()")
+            
+    .os-buttons.windows(ng-class="{ nofocus: focused == false }", ng-show="system.windows == true")
+        a.button.min(ng-click="minimize()")
+        a.button.max(ng-click="maximize()")
+        a.button.cls(ng-click="close()")
     
     .logo
 

@@ -1,5 +1,7 @@
 'use strict'
 
+remote = require "remote"
+
 ###*
  # @ngdoc function
  # @name gummyApp.controller:MainCtrl
@@ -11,17 +13,41 @@ angular
     .module 'gummyApp'
     .controller 'HeaderCtrl', ($scope) ->
 
-        $scope.remote = require "remote"
 
+        ###*
+         # Get current operating system
+         # @attribute system
+        ###
+        $scope.system =
+            darwin: false #/^darwin/.test process.platform
+            windows: true #/^win/.test process.platform
+            linux: /^linux/.test process.platform
+
+
+        ###*
+         # Whether window is focused or not
+         # @attribute focused
+        ###
         $scope.focused = true
 
+
+        ###*
+         # Close app
+         # @method close
+        ###
         $scope.close = () ->
-            $scope.remote.getCurrentWindow().close()
+            remote.getCurrentWindow().close()
 
 
+        ###*
+         # Minimize app
+         # @method minimize
+        ###
         $scope.minimize = () ->
-            $scope.remote.getCurrentWindow().minimize()
+            remote.getCurrentWindow().minimize()
 
+
+        # Add events to current window
         window.onblur = (e) ->
             $scope.focused = false
             $scope.$apply()
@@ -29,6 +55,6 @@ angular
         window.onfocus = (e) ->
             $scope.focused = true
 
-            if $scope.remote.getCurrentWindow().isClosed()
-                $scope.remote.getCurrentWindow().restart()
+            if remote.getCurrentWindow().isClosed()
+                remote.getCurrentWindow().restart()
             $scope.$apply()

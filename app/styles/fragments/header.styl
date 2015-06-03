@@ -36,7 +36,7 @@
 
     .os-buttons
         display: block
-        width: 85px
+        width: 65px
         height: 100%
         z-index: 2
         position: absolute
@@ -78,3 +78,49 @@
                 background-image: url("../images/header/min-nofocus.svg")
             .max
                 background-image: url("../images/header/max-nofocus.svg")
+
+    &.windows
+
+        .settings
+            right: auto
+            left: 15px
+
+        .os-buttons
+            left: auto
+            right: 10px
+            height: 16px
+
+            .cls,.min,.max
+                display: block
+                float: left
+                padding: 0
+                margin: 0
+                width: 20px
+                height: 16px
+                background-image: url("../images/header/buttons-windows.png")
+                background-size: 160px 16px
+
+                &:active
+                    background-image: url("../images/header/buttons-windows.png")
+
+            &.nofocus
+                .cls, .min, .max
+                    background-image: url("../images/header/buttons-windows.png")
+
+                .cls
+                    background-position: -40px 0
+
+            .cls
+                background-position: -100px 0
+                &:hover
+                    background-position: -100px 0
+
+            .min
+                background-position: 0 0
+                &:hover
+                    background-position: -60px 0
+
+            .max
+                background-position: -20px 0
+                &:hover
+                    background-position: -80px
