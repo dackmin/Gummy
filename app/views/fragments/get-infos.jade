@@ -1,0 +1,20 @@
+.get-infos(ng-controller="GetInfosCtrl")
+
+    //# CLOSE BUTTON
+    a.close(href="", ng-click="close()")
+        i.s-times
+
+    //# CONTENT, LOL
+    .content
+        h2
+            | What we found for "
+            em {{ movie.filename }}
+            | "...
+        
+        .infos.clearfix(ng-repeat="movie_infos in movies", ng-click="chose(movie_infos)")
+            .thumb(style="background-image: url({{ movie_infos.cover.small }})")
+            h3.title {{ movie_infos.title }}
+            p.additional
+                span {{ movie_infos.year }}
+                span {{ movie_infos.rating }}
+            p.synopsis {{ movie_infos.synopsis }}
