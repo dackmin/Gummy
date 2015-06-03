@@ -1,7 +1,7 @@
 'use strict'
 
 remote = require "remote"
-app = remote.require("app")
+app = remote.require "app"
 Datastore = remote.require "nedb"
 
 ###*
@@ -70,15 +70,14 @@ angular.module 'gummyApp'
                     $scope.add_movie movie
 
 
-
-
         ###*
          # Open movie details
          # @method open_movie
          # @param {Object} movie
         ###
-        $scope.open_movie = (movie) ->
+        $scope.open_movie = (movie, apply) ->
             $rootScope.selected = movie
+            if apply then $rootScope.$apply()
 
 
         ###*
