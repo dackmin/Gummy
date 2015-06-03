@@ -1,5 +1,5 @@
 .main-grid
-    div.movie(ng-repeat="movie in grid")
+    div.movie(ng-repeat="movie in grid | orderBy:id")
         
         a(href="javascript:;", ng-click="open_movie(movie)", ng-context-menu="movie")
             .thumb-wrapper
