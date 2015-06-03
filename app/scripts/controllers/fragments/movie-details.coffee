@@ -15,7 +15,6 @@ angular.module 'gummyApp'
          # Movie model
          # @attribute movie
         ###
-        console.log $rootScope.selected
         $scope.movie = $rootScope.selected
 
 
