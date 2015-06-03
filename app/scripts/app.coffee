@@ -10,13 +10,14 @@
 ###
 angular
   .module 'gummyApp', [
-    'ngAnimate',
-    'ngCookies',
-    'ngMessages',
-    'ngResource',
-    'ngRoute',
-    'ngSanitize',
+    'ngAnimate'
+    'ngCookies'
+    'ngMessages'
+    'ngResource'
+    'ngRoute'
+    'ngSanitize'
     'ngTouch'
+    'ng-context-menu'
   ]
   .config ($routeProvider) ->
     $routeProvider
@@ -28,4 +29,3 @@ angular
         controller: 'AboutCtrl'
       .otherwise
         redirectTo: '/'
-
