@@ -9,7 +9,7 @@
 ###
 angular
     .module 'gummyApp'
-    .controller 'MainCtrl', ($scope, $rootScope, $timeout, $q, $trakt, $db) ->
+    .controller 'MainCtrl', ($scope, $rootScope, $timeout, $q, $trakt, $db, $location) ->
 
         # Imports
         remote = require "remote"
@@ -45,12 +45,16 @@ angular
             $scope.reset_movies()
 
             # Read DB
-            $db.movies.find {}, (e, movies) ->
-                if e then console.error "DB", e
+            $db.movies
+                .find {}
+                .sort
+                    title: 1
+                .exec (e, movies) ->
+                    if e then console.error "DB", e
 
-                # Add existing movies to main grid
-                for movie in movies
-                    $scope.add_movie movie
+                    # Add existing movies to main grid
+                    for movie in movies
+                        $scope.add_movie movie
 
 
         ###*
@@ -84,6 +88,9 @@ angular
         ###
         $scope.drop = (files) ->
 
+            if(files.length > 20)
+                return alert "For now, Gummy is uber-shitty and cannot handle more than 20 movies-drop at a time"
+
             for _file in files
 
                 # Check if movie is already in user's library
@@ -106,26 +113,28 @@ angular
                             .search filename
                             .then (data) ->
 
-                                # Use firts found movie by default
-                                stuff = data[0]
+                                # If nothing is found, we add an empty movie for
+                                # future seek
+                                if data.length == 0
+                                    $scope.insert_movie $trakt.toEmpty(filename, file.path)
 
-                                # Get cast infos
-                                $trakt
-                                    .get stuff.id, stuff
-                                    .then (movie) ->
+                                else
+                                    # Use firts found movie by default
+                                    stuff = data[0]
 
-                                        # Add filepath to db
-                                        movie.path = file.path
+                                    # Get cast infos
+                                    $trakt
+                                        .get stuff.id, stuff
+                                        .then (movie) ->
 
-                                        # Save data to DB
-                                        $db.movies.insert movie, (e, item) ->
-                                            if e then return console.error "DB", e
+                                            # Add filepath to db
+                                            movie.path = file.path
 
                                             # Add data to main grid
-                                            $scope.add_movie movie
+                                            $scope.insert_movie movie
 
-                                    .catch (e) ->
-                                        console.error "API", e
+                                        .catch (e) ->
+                                            console.error "API", e
 
                             .catch (e) ->
                                 console.error "API", e
@@ -142,8 +151,12 @@ angular
         $scope.add_movie = (movie) ->
             $timeout () ->
                 $scope.grid.push movie
-            , 1
 
+
+        $scope.insert_movie = (movie) ->
+            $db.movies.insert movie, (e, item) ->
+                if e then console.error "[AddMovie]", e
+                else $scope.add_movie movie
 
         ###*
          # Refresh grid with stream from db
@@ -173,7 +186,7 @@ angular
 
         # Listen for movies changes
         $rootScope.$on "refresh.movies", () ->
-            $scope.init()
+            $location.path "/"
 
         # Add drop event to document
         document.addEventListener "dragover", (e) -> e.preventDefault() and e.stopPropagation()

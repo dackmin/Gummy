@@ -149,4 +149,19 @@ angular
                 medium: raw.infos.raw.movie.images.poster.medium
                 large: raw.infos.raw.movie.images.poster.full
 
+
+        @toEmpty = (filename, path) ->
+            id: ""
+            rating: 0
+            title: filename
+            path: path
+            synopsis: ""
+            year: (new Date()).getFullYear()
+            cover:
+                small: ""
+                medium: ""
+                large: ""
+            raw: {}
+
+
         @
