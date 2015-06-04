@@ -27,6 +27,28 @@ angular
 
 
         ###*
+         # Current seeked filename
+         # @attribute filename
+        ###
+        $scope.filename = ""
+
+
+        ###*
+         # Currently loading
+         # @attribute loading
+        ###
+        $scope.loading =
+            list: false
+
+
+        ###*
+         # Current errors
+         # @attribute errors
+        ###
+        $scope.errors = []
+
+
+        ###*
          # Close seeked movie
          # @method close
         ###
@@ -35,22 +57,37 @@ angular
 
 
         ###*
-         # Seek a movie list from a filename search
-         # @method seek
+         # Init controller
+         # @method init
         ###
-        $scope.seek = () ->
+        $scope.init = () ->
 
             # Get filename from movie previous added file
             full_path = $scope.movie.path.split "/"
             full_filename = full_path.pop().split "."
             ext = full_filename.pop()
-            filename = $scope.movie.filename = filename = full_filename.join " "
+            $scope.movie.filename = $scope.filename = full_filename.join " "
+
+            $scope.seek()
+
+
+        ###*
+         # Seek a movie list from a filename search
+         # @method seek
+        ###
+        $scope.seek = () ->
+            $scope.errors = []
+            $scope.loading.list = true
 
             # Call provider for infos
             $trakt
-                .search filename
+                .search $scope.filename
                 .then (data) ->
                     $scope.movies = data
+                .catch (e) ->
+                    $scope.errors.push e
+                .finally () ->
+                    $scope.loading.list = false
 
 
         ###*
@@ -73,4 +110,4 @@ angular
 
 
         # GOGO GADGETO SEEKING
-        $scope.seek()
+        $scope.init()
