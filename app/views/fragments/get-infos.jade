@@ -6,10 +6,14 @@
 
     //# CONTENT, LOL
     .content
-        h2
-            | What we found for "
-            em {{ movie.filename }}
-            | "...
+        h2 What we found for
+        form(ng-submit="seek()")
+            img(src="images/loaders/puff.svg", ng-if="loading.list == true")
+            input(type="text", value="{{ movie.filename }}", placeholder="Type a movie name here", ng-model="filename")
+            
+            .errors(ng-if="errors.length > 0")
+                i.s-bug
+                | Ewwwww. Something went bad with Trakt API. Try again later.
         
         .infos.clearfix(ng-repeat="movie_infos in movies", ng-click="chose(movie_infos)")
             .thumb(style="background-image: url({{ movie_infos.cover.small }})")
