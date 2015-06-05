@@ -41,7 +41,7 @@ angular
          # Init app
          # @method init
         ###
-        $scope.init = () ->
+        $scope.init = ->
             $scope.reset_movies()
 
             # Read DB
@@ -61,24 +61,36 @@ angular
          # Open movie details
          # @method open_movie
          # @param {Object} movie
-         # @param {boolean} apply - Bad practice, I know, and I don't care.
         ###
-        $scope.open_movie = (movie, apply) ->
-            $timeout () ->
+        $scope.open_movie = (movie) ->
+            $timeout ->
                 $rootScope.selected = movie
-            #if apply then $rootScope.$apply()
 
 
         ###*
          # Seek more infos on a precise movie
          # @method seek_movie_infos
          # @param {Object} movie
-         # @param {boolean} apply - Bad practice, I know, and I don't care.
         ###
-        $scope.seek_movie_infos = (movie, apply) ->
-            $timeout () ->
+        $scope.seek_movie_infos = (movie) ->
+            $timeout ->
                 $rootScope.seeking = movie
-            #if apply then $rootScope.$apply()
+
+
+        ###*
+         # Remove a movie from library
+         # @method delete_movie
+         # @param {Object} item - Scope from movie item
+        ###
+        $scope.delete_movie = (item) ->
+            console.log item
+            $db.movies
+                .remove { path: item.movie.path }, {}, (e, removed) ->
+                    if e then console.error "RemoveMovie", e
+                    else if removed is 0 then console.error "RemoveMovie", "Nothing has been removed"
+                    else
+                        $timeout ->
+                            $scope.grid.splice $scope.grid.indexOf(item.movie), 1
 
 
         ###*
@@ -153,6 +165,11 @@ angular
                 $scope.grid.push movie
 
 
+        ###*
+         # Insert a new movie to db
+         # @method insert_movie
+         # @param {Object} movie - Your movie
+        ###
         $scope.insert_movie = (movie) ->
             $db.movies.insert movie, (e, item) ->
                 if e then console.error "[AddMovie]", e
@@ -162,8 +179,8 @@ angular
          # Refresh grid with stream from db
          # @method reset_movies
         ###
-        $scope.reset_movies = () ->
-            $timeout () ->
+        $scope.reset_movies = ->
+            $timeout ->
                 $scope.grid = []
 
 

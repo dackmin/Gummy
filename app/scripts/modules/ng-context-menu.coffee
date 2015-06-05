@@ -1,12 +1,14 @@
 "use strict"
 
 remote = require "remote"
+win = remote.getCurrentWindow()
+dialog = remote.require "dialog"
 Menu = remote.require "menu"
 
 angular
     .module "ng-context-menu", []
 
-    .directive "ngContextMenu", () ->
+    .directive "ngContextMenu", ->
         restrict: "A"
         replace: false
         link: (scope, $elmt, $attrs) ->
@@ -14,14 +16,28 @@ angular
             # Create context menu
             scope.contextmenu = Menu.buildFromTemplate [
                 {
-                    label: "Show",
-                    click: () ->
-                        scope.$parent.open_movie scope.movie, true
+                    label: "Show"
+                    click: ->
+                        scope.$parent.open_movie scope.movie
                 }
                 {
-                    label: "Get informations for this movie...",
-                    click: () ->
-                        scope.$parent.seek_movie_infos scope, true
+                    label: "Get informations for this movie..."
+                    click: ->
+                        scope.$parent.seek_movie_infos scope
+                }
+                {
+                    type: "separator"
+                }
+                {
+                    label: "Delete"
+                    click: ->
+                        choice = dialog.showMessageBox
+                            type: "info"
+                            buttons: ["Yes", "No"]
+                            title: "Delete movie"
+                            message: "Do you really want to remove #{scope.movie.title} ?"
+
+                        if choice is 0 then scope.$parent.delete_movie scope
                 }
             ]
 
