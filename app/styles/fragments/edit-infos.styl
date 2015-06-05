@@ -1,0 +1,31 @@
+.edit-infos
+    width: 100%
+    height: calc(100vh - 50px)
+    position: fixed
+    top: 50px
+    background: rgba(0, 0, 0, 0.8)
+    z-index: 12
+    overflow: auto
+
+
+    .close
+        position: fixed
+        right: 30px
+        top: 80px
+        font-size: 30px
+        color: $color-white
+        transition: opacity .3s ease
+        opacity: 0.5
+
+        &:hover
+            opacity: 1
+
+
+    .content
+        width: 700px
+        padding: 50px 0
+        margin: auto
+        overflow: visible
+
+        h2
+            margin-bottom: 0
