@@ -21,7 +21,7 @@ angular
                 {
                     label: "Get informations for this movie...",
                     click: () ->
-                        scope.$parent.seek_movie_infos scope.movie, true
+                        scope.$parent.seek_movie_infos scope, true
                 }
             ]
 
