@@ -5,3 +5,37 @@
     background: $color-shakespear
     color: $color-white
     border-radius: 4px
+
+// Inputs
+input[type="text"],
+textarea
+    font-size: 16px
+    background: transparent
+    color: $color-white
+    border: none
+    border-left: 5px solid $color-shakespear
+    width: 100%
+    outline: none
+    padding: 0 10px
+
+    &::selection
+        background: rgba(255,132,113, 0.5)
+
+textarea
+    min-height: 120px
+
+// Scrolling
+::-webkit-scrollbar
+    width 6px
+
+::-webkit-scrollbar-track
+    background-color transparent
+
+::-webkit-scrollbar-thumb
+    background-color $color-shakespear
+
+::-webkit-resizer,
+::-webkit-scrollbar-corner,
+::-webkit-scrollbar-button,
+::-webkit-scrollbar-track-piece
+    display none
