@@ -443,8 +443,8 @@ module.exports = function (grunt) {
     },
 
     exec: {
-      electron: '/usr/local/lib/node_modules/electron-prebuilt/dist/Electron.app/Contents/MacOS/Electron electron',
-      electron_w: 'electron electron'
+      osx: '/usr/local/lib/node_modules/electron-prebuilt/dist/Electron.app/Contents/MacOS/Electron electron',
+      windows: 'electron electron'
     }
   });
 
@@ -503,14 +503,14 @@ module.exports = function (grunt) {
     'build'
   ]);
 
-  grunt.registerTask("electron", [
-      "build",
-      "exec:electron"
+  grunt.registerTask("electron:osx", [
+      //"build",
+      "exec:osx"
   ]);
 
-  grunt.registerTask("electron:window", [
-      "build",
-      "exec:electron_w"
+  grunt.registerTask("electron:windows", [
+      //"build",
+      "exec:windows"
   ]);
-  
+
 };
