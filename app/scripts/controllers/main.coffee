@@ -78,6 +78,16 @@ angular
 
 
         ###*
+         # Edit a movie, lol
+         # @method edit_movie
+         # @param {Object} movie
+        ###
+        $scope.edit_movie = (movie) ->
+            $timeout ->
+                $rootScope.editing = movie
+
+
+        ###*
          # Remove a movie from library
          # @method delete_movie
          # @param {Object} item - Scope from movie item
