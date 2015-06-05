@@ -20,6 +20,14 @@ angular
 
 
         ###*
+         # Currently loading
+         # @attribute loading
+        ###
+        $scope.loading =
+            update: false
+
+
+        ###*
          # Close edited movie
          # @method close
         ###
