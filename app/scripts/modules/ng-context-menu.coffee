@@ -16,17 +16,17 @@ angular
             # Create context menu
             scope.contextmenu = Menu.buildFromTemplate [
                 {
-                    label: "Show"
-                    click: ->
-                        scope.$parent.open_movie scope.movie
-                }
-                {
                     label: "Get informations for this movie..."
                     click: ->
                         scope.$parent.seek_movie_infos scope
                 }
                 {
                     type: "separator"
+                }
+                {
+                    label: "Show"
+                    click: ->
+                        scope.$parent.open_movie scope.movie
                 }
                 {
                     label: "Delete"
@@ -38,6 +38,11 @@ angular
                             message: "Do you really want to remove #{scope.movie.title} ?"
 
                         if choice is 0 then scope.$parent.delete_movie scope
+                }
+                {
+                    label: "Properties"
+                    click: ->
+                        scope.$parent.edit_movie scope
                 }
             ]
 
