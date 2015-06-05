@@ -9,14 +9,14 @@
 ###
 angular
     .module 'gummyApp'
-    .controller 'GetInfosCtrl', ($scope, $rootScope, $trakt, $db) ->
+    .controller 'GetInfosCtrl', ($scope, $rootScope, $trakt, $db, $timeout) ->
 
 
         ###*
          # Movie model
          # @attribute movie
         ###
-        $scope.movie = $rootScope.seeking
+        $scope.movie = $rootScope.seeking.movie
 
 
         ###*
@@ -53,7 +53,8 @@ angular
          # @method close
         ###
         $scope.close = () ->
-            $rootScope.seeking = null
+            $timeout () ->
+                $rootScope.seeking = null
 
 
         ###*
@@ -77,6 +78,7 @@ angular
         ###
         $scope.seek = () ->
             $scope.errors = []
+            $scope.movies = []
             $scope.loading.list = true
 
             # Call provider for infos
@@ -99,14 +101,15 @@ angular
 
             # Sanitize
             _tmp = angular.copy movie
-            delete _tmp.$$hashkey
             _tmp.path = $scope.movie.path
 
             # Update movie to db
             $db.movies.update { path: $scope.movie.path }, _tmp, {}, (e, items) ->
                 if e then console.error "MovieUpdate", e
                 else if items <= 0 then console.error "MovieUpdate", "Nothing updated"
-                else $rootScope.$emit "refresh.movies", {}
+                else
+                    $rootScope.seeking.movie = _tmp
+                    $scope.close()
 
 
         # GOGO GADGETO SEEKING
