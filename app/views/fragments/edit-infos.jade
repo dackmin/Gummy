@@ -22,3 +22,7 @@
                 
                 label Cover url
                 input(type="text", ng-model="movie.cover.large")
+
+                p.buttons
+                    a.ui-button Save
+                    img(src="images/loaders/puff.svg", ng-if="loading.update == true")
