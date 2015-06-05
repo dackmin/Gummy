@@ -184,10 +184,6 @@ angular
             q.promise
 
 
-        # Listen for movies changes
-        $rootScope.$on "refresh.movies", () ->
-            $location.path "/"
-
         # Add drop event to document
         document.addEventListener "dragover", (e) -> e.preventDefault() and e.stopPropagation()
         document.addEventListener "dragleave", (e) -> e.preventDefault() and e.stopPropagation()
