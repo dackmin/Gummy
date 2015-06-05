@@ -23,6 +23,7 @@
     </div>
     <ng-include ng-if="selected" src="'views/fragments/movie-details.html'"></ng-include>
     <ng-include ng-if="seeking" src="'views/fragments/get-infos.html'"></ng-include>
+    <ng-include ng-if="editing" src="'views/fragments/edit-infos.html'"></ng-include>
 
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -65,6 +66,7 @@
         <script src="scripts/controllers/fragments/header.js"></script>
         <script src="scripts/controllers/fragments/movie-details.js"></script>
         <script src="scripts/controllers/fragments/get-infos.js"></script>
+        <script src="scripts/controllers/fragments/edit-infos.js"></script>
         <!-- endbuild -->
 </body>
 </html>
