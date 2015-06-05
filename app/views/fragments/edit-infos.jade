@@ -1,0 +1,24 @@
+.edit-infos(ng-controller="EditInfosCtrl")
+
+    //# CLOSE BUTTON
+    a.close(href="", ng-click="close()")
+        i.s-times
+
+    //# CONTENT, LOL
+    .content
+        h2
+            | Edit   
+            em {{ movie.title }}
+
+            form
+                label Title
+                input(type="text", ng-model="movie.title")
+                
+                label Year
+                input(type="text", ng-model="movie.year")
+                
+                label Synopsis
+                textarea(ng-model="movie.synopsis")
+                
+                label Cover url
+                input(type="text", ng-model="movie.cover.large")
