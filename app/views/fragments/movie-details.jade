@@ -1,4 +1,6 @@
-.movie-details(ng-controller="MovieDetailsCtrl")
+.movie-details(ng-controller="MovieDetailsCtrl", style="background-image: url({{ movie.background.large }})")
+    
+    .background
 
     //# CLOSE BUTTON
     a.close(href="", ng-click="close()")
