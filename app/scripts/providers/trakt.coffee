@@ -153,9 +153,9 @@ angular
                 medium: raw.infos.raw.movie.images.poster.medium
                 large: raw.infos.raw.movie.images.poster.full
             background:
-                small: raw.movie.images.fanart.thumb
-                medium: raw.movie.images.fanart.medium
-                large: raw.movie.images.fanart.full
+                small: raw.infos.raw.movie.images.fanart.thumb
+                medium: raw.infos.raw.movie.images.fanart.medium
+                large: raw.infos.raw.movie.images.fanart.full
 
 
         ###*
