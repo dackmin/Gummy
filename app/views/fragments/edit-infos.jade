@@ -11,6 +11,13 @@
             em {{ movie.title }}
 
             form
+            
+                label File path
+                .input-group
+                    input.form-control(type="text", ng-model="movie.path")
+                    .input-group-btn
+                        .btn.ui-button(ng-click="find_file()") Find
+                
                 label Title
                 input(type="text", ng-model="movie.title")
                 
@@ -39,5 +46,5 @@
                 input(type="text", ng-model="movie.background.large")
 
                 p.buttons
-                    a.ui-button Save
+                    a.ui-button(ng-click="update()") Save
                     img(src="images/loaders/puff.svg", ng-if="loading.update == true")
