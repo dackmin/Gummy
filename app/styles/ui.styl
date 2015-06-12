@@ -18,13 +18,17 @@
 input[type="text"],
 textarea
     font-size: 16px
-    background: transparent
+    background: rgba(255,255,255,0.1)
     color: $color-white
     border: none
-    border-left: 1px dotted $color-shakespear
+    border-left: 1px dotted $color-shakespear !important
     width: 100%
     outline: none
-    padding: 0 10px
+    padding: 8px 10px
+    border-radius: 0
+
+    &:focus
+        box-shadow: none
 
     &::selection
         background: rgba(255,132,113, 0.5)
