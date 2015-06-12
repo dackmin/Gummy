@@ -128,6 +128,10 @@ angular
                 small: raw.movie.images.poster.thumb
                 medium: raw.movie.images.poster.medium
                 large: raw.movie.images.poster.full
+            background:
+                small: raw.movie.images.fanart.thumb
+                medium: raw.movie.images.fanart.medium
+                large: raw.movie.images.fanart.full
             raw: raw
 
 
@@ -148,8 +152,19 @@ angular
                 small: raw.infos.raw.movie.images.poster.thumb
                 medium: raw.infos.raw.movie.images.poster.medium
                 large: raw.infos.raw.movie.images.poster.full
+            background:
+                small: raw.movie.images.fanart.thumb
+                medium: raw.movie.images.fanart.medium
+                large: raw.movie.images.fanart.full
 
 
+        ###*
+         # Generate an empty object when movie is not recognized
+         # @method toEmpty
+         # @param {String} filename - Sanitized filename (the.best.movie.ever.720p.HDTV.mkv becomes "The best movie ever")
+         # @param {String} path - original filepath
+         # @return {Object}
+        ###
         @toEmpty = (filename, path) ->
             id: ""
             rating: 0
@@ -158,6 +173,10 @@ angular
             synopsis: ""
             year: (new Date()).getFullYear()
             cover:
+                small: ""
+                medium: ""
+                large: ""
+            background:
                 small: ""
                 medium: ""
                 large: ""
