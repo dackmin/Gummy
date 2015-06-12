@@ -20,8 +20,23 @@
                 label Synopsis
                 textarea(ng-model="movie.synopsis")
                 
-                label Cover url
+                label Cover URL (small)
+                input(type="text", ng-model="movie.cover.small")
+                
+                label Cover URL (medium)
+                input(type="text", ng-model="movie.cover.medium")
+                
+                label Cover URL (large)
                 input(type="text", ng-model="movie.cover.large")
+                
+                label Background URL (small)
+                input(type="text", ng-model="movie.background.small")
+                
+                label Background URL (medium)
+                input(type="text", ng-model="movie.background.medium")
+                
+                label Background URL (large)
+                input(type="text", ng-model="movie.background.large")
 
                 p.buttons
                     a.ui-button Save
